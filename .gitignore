@@ -12,7 +12,7 @@ weights/
 *.safetensors
 *.onnx
 !trainedmodel/
-!trainedmodel/best_tract_f1_model.pth
+!trainedmodel/tractomamba_pretrained.pth
 
 # Local experiment/data artifacts.
 *.log

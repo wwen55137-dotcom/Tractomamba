@@ -11,7 +11,7 @@ import whitematteranalysis as wma
 
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_WEIGHT_PATH = os.path.join(ROOT, "trainedmodel", "best_tract_f1_model.pth")
+DEFAULT_WEIGHT_PATH = os.path.join(ROOT, "trainedmodel", "tractomamba_pretrained.pth")
 os.chdir(ROOT)
 sys.path.insert(0, ROOT)
 
