@@ -145,16 +145,3 @@ See `REPRODUCIBILITY.md` for more details.
 ## License
 
 This package follows the license in `LICENSE`.
-
-## Citation
-
-If you use atlas-derived training data or label resources, please cite the
-white matter atlas work:
-
-```text
-Zhang, F., Wu, Y., Norton, I., Rathi, Y., Makris, N.,
-O'Donnell, L. J.
-An anatomically curated fiber clustering white matter atlas for
-consistent white matter tract parcellation across the lifespan.
-NeuroImage, 179:429-447, 2018.
-```
