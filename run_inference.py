@@ -134,11 +134,11 @@ def main():
     pd_tractography = wma.io.read_polydata(cli.tractography_path)
     logger.info("Finish reading tractography from: {}".format(cli.tractography_path))
 
-    feat_RAS, _ = tract_feat.feat_RAS(pd_tractography, number_of_points=model_config.num_points)
-    logger.info("The number of fibers in test tractography is {}".format(feat_RAS.shape[0]))
+    tract_features, _ = tract_feat.feat_tractography(pd_tractography, number_of_points=model_config.num_points)
+    logger.info("The number of fibers in test tractography is {}".format(tract_features.shape[0]))
 
     dataset = RealData_PatchData(
-        feat_RAS,
+        tract_features,
         k=model_config.k,
         k_global=model_config.k_global,
         cal_equiv_dist=model_config.cal_equiv_dist,

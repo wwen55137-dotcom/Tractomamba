@@ -66,7 +66,7 @@ need version-specific installation commands.
 The inference script expects a whole-brain tractography file:
 
 - Format: `.vtp` or `.vtk`
-- Coordinate convention: RAS
+- Coordinate convention: LPS
 - The tractography should already be registered/aligned to the model's expected
   space
 - The script resamples streamline features internally according to
@@ -90,6 +90,9 @@ Predicted tract files are written to:
 ```text
 outputs/example/predictions/
 ```
+
+The output tract files preserve the input tractogram coordinates and are written
+in LPS space.
 
 Runtime logs are written to:
 
