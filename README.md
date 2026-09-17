@@ -1,14 +1,10 @@
 # Tractomamba
 
-Tractomamba is a sequence-aware whole-brain tractography parcellation framework
-for classifying streamlines into anatomically defined white matter fiber
-bundles. It combines PointNet-style geometric encoding with bidirectional
-Mamba-based sequence modeling to capture both local streamline geometry and
-long-range trajectory patterns.
-
-This inference package takes a registered whole-brain tractography file in
-`.vtp` or `.vtk` format and writes the predicted tract bundles as separate
-`.vtp` files.
+Tractomamba is a sequence-aware algorithm for whole-brain parcellation of
+streamlines from diffusion MRI tractography into anatomically defined white
+matter fiber bundles. It assigns one label to each streamline in a registered
+tractogram and writes the predicted tract bundles as separate `.vtp` files for
+efficient large-scale inference.
 
 This GitHub release includes the inference code, model configuration, label
 metadata, and a trained checkpoint for direct inference.
