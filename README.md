@@ -40,6 +40,33 @@ trainedmodel/tractomamba_pretrained.pth
 `run_inference.py` uses this checkpoint by default. You only need to pass
 `--weight_path` if you want to use another checkpoint.
 
+## Quick Start
+
+Clone the repository and install the package:
+
+```bash
+git clone https://github.com/wwen55137-dotcom/Tractomamba.git
+cd Tractomamba
+pip install -e .
+```
+
+Prepare a registered whole-brain tractography file in `.vtp` or `.vtk` format
+using the LPS coordinate convention. Then run inference with the included
+checkpoint:
+
+```bash
+tractomamba \
+  --tractography_path /path/to/input.vtp \
+  --out_path ./outputs/example \
+  --device auto
+```
+
+The predicted tract bundles will be saved in:
+
+```text
+outputs/example/predictions/
+```
+
 ## Requirements
 
 This package is intended for a CUDA-enabled Python environment. CPU inference
@@ -66,7 +93,7 @@ need version-specific installation commands.
 The inference script expects a whole-brain tractography file:
 
 - Format: `.vtp` or `.vtk`
-- Coordinate convention: LPS or RAS
+- Coordinate convention: LPS
 - The tractography should already be registered/aligned to the model's expected
   space
 - The script resamples streamline features internally according to
@@ -78,17 +105,6 @@ The ORG atlas used in training is available at:
 
 ```text
 http://dmri.slicer.org/atlases/
-```
-
-## Run Inference
-
-After installation, run:
-
-```bash
-tractomamba \
-  --tractography_path /path/to/input.vtp \
-  --out_path ./outputs/example \
-  --device auto
 ```
 
 ## Output
