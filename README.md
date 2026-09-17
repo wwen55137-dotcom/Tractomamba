@@ -72,6 +72,14 @@ The inference script expects a whole-brain tractography file:
 - The script resamples streamline features internally according to
   `configs/model_config.json`
 
+## Atlas Data
+
+The ORG atlas used in training is available at:
+
+```text
+http://dmri.slicer.org/atlases/
+```
+
 ## Run Inference
 
 After installation, run:
