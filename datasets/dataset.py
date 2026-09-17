@@ -81,7 +81,7 @@ class RealData_PatchData(data.Dataset):
 class unrelatedHCP_PatchData(data.Dataset):
     def __init__(self, root, out_path, logger, split='train', num_fiber_per_brain=10000,num_point_per_fiber=15, 
                  use_tracts_training=False, k=0, k_global=0, rot_ang_lst=[0,0,0], scale_ratio_range=[0,0], trans_dis=0.0,
-                 aug_axis_lst=['LR','AP', 'SI'], aug_times=10, cal_equiv_dist=False, k_ds_rate=0.1, recenter=False, include_org_data=False,
+                 aug_axis_lst=['LR','AP', 'SI'], aug_times=10, cal_equiv_dist=False, k_ds_rate=0.1, include_org_data=False,
                  flip_aug=False, flip_prob=0.5):        
         self.root = root
         self.out_path = out_path
@@ -98,7 +98,6 @@ class unrelatedHCP_PatchData(data.Dataset):
         self.aug_axis_lst = aug_axis_lst
         self.aug_times = aug_times
         self.k_ds_rate=k_ds_rate  
-        self.recenter = recenter
         self.include_org_data = include_org_data
         
         self.flip_aug = flip_aug
@@ -231,27 +230,17 @@ class unrelatedHCP_PatchData(data.Dataset):
                     aug_feat = trot.transform_points(cur_features_torch).numpy()  # rotate and then convert tensor to numpy
                     
                     scale_r, LR_trans, AP_trans, SI_trans = round(scale_r,3),round(LR_trans,1),round(AP_trans,1),round(SI_trans,1)
-                    if self.recenter:
-                        aug_feat = center_tractography(self.root, aug_feat)
-                        self.logger.info('Subject idx {} (unique ID {}, aug {}): rotation {}, scale {}, translation {} (centered). Aug axis order: {}'
-                                        .format(i_subject, unique_id, i_aug, cur_angles, scale_r, [LR_trans, AP_trans, SI_trans], self.aug_axis_lst))
-                    else:
-                        self.logger.info('Subject idx {} (unique ID {}, aug {}): rotation {}, scale {}, translation {}. Aug axis order: {}'
-                                        .format(i_subject, unique_id, i_aug, cur_angles, scale_r, [LR_trans, AP_trans, SI_trans], self.aug_axis_lst))
+                    self.logger.info('Subject idx {} (unique ID {}, aug {}): rotation {}, scale {}, translation {}. Aug axis order: {}'
+                                    .format(i_subject, unique_id, i_aug, cur_angles, scale_r, [LR_trans, AP_trans, SI_trans], self.aug_axis_lst))
                     aug_features[i_aug,...] = aug_feat
                     # save augmented data
                     if self.save_aug_data and i_subject < 5: # only save the first 5 subjects
                         aug_data_save_path = os.path.join(self.out_path,'AugmentedData',self.split)
                         makepath(aug_data_save_path)
                         aug_feat_pd = array2vtkPolyData(aug_feat)
-                        if self.recenter:
-                            aug_feat_name = 'SubID{}Aug{}_RotR{}A{}S{}_Scale{}_TransR{}A{}S{}_Recenter'\
-                                .format(i_subject, i_aug, cur_angles[0],cur_angles[1],cur_angles[2],
-                                        scale_r, LR_trans, AP_trans, SI_trans)
-                        else:
-                            aug_feat_name = 'SubID{}Aug{}_RotR{}A{}S{}_Scale{}_TransR{}A{}S{}'\
-                                .format(i_subject, i_aug, cur_angles[0],cur_angles[1],cur_angles[2],
-                                        scale_r, LR_trans, AP_trans, SI_trans)                           
+                        aug_feat_name = 'SubID{}Aug{}_RotR{}A{}S{}_Scale{}_TransR{}A{}S{}'\
+                            .format(i_subject, i_aug, cur_angles[0],cur_angles[1],cur_angles[2],
+                                    scale_r, LR_trans, AP_trans, SI_trans)
                         aug_feat_name = aug_feat_name.replace('.', '`') + '.vtk'
                         wma.io.write_polydata(aug_feat_pd, os.path.join(aug_data_save_path,aug_feat_name))  
                         print('Save augmented data to {}'.format(os.path.join(aug_data_save_path,aug_feat_name)))
@@ -412,5 +401,3 @@ def dist_mat_knn(brain_feat, k_ds_rate, k, use_endpoints_dist, cal_equiv_dist):
     near_flip_mask = torch.gather(flip_mask, dim=1, index=near_idx) # (N_fiber, k). The flip mask of the info fibers (neighbor).
 
     return near_idx.numpy(), near_flip_mask.numpy(), ds_brain_feat.numpy(), ds_brain_feat_equiv.numpy()
-
-        

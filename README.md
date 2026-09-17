@@ -23,6 +23,7 @@ Tractomamba/
 │   └── tractomamba_pretrained.pth
 ├── utils/
 ├── run_inference.py
+├── pyproject.toml
 ├── requirements.txt
 ├── REPRODUCIBILITY.md
 └── README.md
@@ -45,13 +46,13 @@ This package is intended for a CUDA-enabled Python environment. CPU inference
 is not supported because the `mamba-ssm` kernels used by this model require
 CUDA.
 
-Install dependencies from this folder:
+Install Tractomamba from this folder:
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
 
-Or install the main dependencies directly:
+This installs the `tractomamba` command-line tool and the main dependencies:
 
 ```bash
 pip install torch numpy pandas openpyxl vtk whitematteranalysis pytorch3d mamba-ssm
@@ -70,14 +71,13 @@ The inference script expects a whole-brain tractography file:
   space
 - The script resamples streamline features internally according to
   `configs/model_config.json`
-- The script does not recenter the input tractography
 
 ## Run Inference
 
-From the `Tractomamba` folder:
+After installation, run:
 
 ```bash
-python run_inference.py \
+tractomamba \
   --tractography_path /path/to/input.vtp \
   --out_path ./outputs/example \
   --device auto

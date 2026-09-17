@@ -13,8 +13,7 @@ Inference can be reproduced when the following are fixed:
 - Python, CUDA, PyTorch, `mamba-ssm`, and `pytorch3d` versions
 - Inference arguments such as `--batch_size`, `--k_ds_rate`, and `--device`
 
-The script does not recenter tractography. Input files should already be
-registered/aligned to the model's expected space.
+Input files should already be registered/aligned to the model's expected space.
 
 ## Training Reproducibility
 
