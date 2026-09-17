@@ -26,7 +26,6 @@ Tractomamba/
 ├── run_inference.py
 ├── pyproject.toml
 ├── requirements.txt
-├── REPRODUCIBILITY.md
 └── README.md
 ```
 
@@ -99,17 +98,6 @@ outputs/example/log/
 ```
 
 Generated outputs and logs are ignored by Git and should not be committed.
-
-## Reproducibility
-
-Inference can be reproduced with:
-
-- The included checkpoint: `trainedmodel/tractomamba_pretrained.pth`
-- The included architecture config: `configs/model_config.json`
-- The same registered input tractography file
-- A compatible CUDA/PyTorch/`mamba-ssm`/`pytorch3d` environment
-
-See `REPRODUCIBILITY.md` for more details.
 
 ## Notes
 
