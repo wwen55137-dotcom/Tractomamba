@@ -20,7 +20,7 @@ Tractomamba/
 ├── models/
 │   └── Tractomamba.py
 ├── trainedmodel/
-│   └── best_tract_f1_model.pth
+│   └── tractomamba_pretrained.pth
 ├── utils/
 ├── run_inference.py
 ├── requirements.txt
@@ -33,7 +33,7 @@ Tractomamba/
 The trained checkpoint is included at:
 
 ```text
-trainedmodel/best_tract_f1_model.pth
+trainedmodel/tractomamba_pretrained.pth
 ```
 
 `run_inference.py` uses this checkpoint by default. You only need to pass
@@ -126,7 +126,7 @@ Generated outputs and logs are ignored by Git and should not be committed.
 
 Inference can be reproduced with:
 
-- The included checkpoint: `trainedmodel/best_tract_f1_model.pth`
+- The included checkpoint: `trainedmodel/tractomamba_pretrained.pth`
 - The included architecture config: `configs/model_config.json`
 - The same registered input tractography file
 - A compatible CUDA/PyTorch/`mamba-ssm`/`pytorch3d` environment

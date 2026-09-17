@@ -7,7 +7,7 @@ checkpoint for direct inference.
 
 Inference can be reproduced when the following are fixed:
 
-- Checkpoint: `trainedmodel/best_tract_f1_model.pth`
+- Checkpoint: `trainedmodel/tractomamba_pretrained.pth`
 - Model configuration: `configs/model_config.json`
 - Registered input tractography file
 - Python, CUDA, PyTorch, `mamba-ssm`, and `pytorch3d` versions
