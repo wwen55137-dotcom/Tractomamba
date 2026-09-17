@@ -51,15 +51,11 @@ Install dependencies from this folder:
 pip install -r requirements.txt
 ```
 
-Main dependencies:
+Or install the main dependencies directly:
 
-- PyTorch
-- NumPy
-- pandas and openpyxl
-- VTK
-- whitematteranalysis
-- pytorch3d
-- mamba-ssm
+```bash
+pip install torch numpy pandas openpyxl vtk whitematteranalysis pytorch3d mamba-ssm
+```
 
 Depending on your CUDA and PyTorch versions, `pytorch3d` and `mamba-ssm` may
 need version-specific installation commands.
@@ -85,25 +81,6 @@ python run_inference.py \
   --tractography_path /path/to/input.vtp \
   --out_path ./outputs/example \
   --device auto
-```
-
-To select a specific GPU:
-
-```bash
-python run_inference.py \
-  --tractography_path /path/to/input.vtp \
-  --out_path ./outputs/example \
-  --device cuda:0
-```
-
-To use a different checkpoint:
-
-```bash
-python run_inference.py \
-  --tractography_path /path/to/input.vtp \
-  --weight_path /path/to/another_checkpoint.pth \
-  --out_path ./outputs/example \
-  --device cuda:0
 ```
 
 ## Output
