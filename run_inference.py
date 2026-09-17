@@ -137,8 +137,6 @@ def main():
     feat_RAS, _ = tract_feat.feat_RAS(pd_tractography, number_of_points=model_config.num_points)
     logger.info("The number of fibers in test tractography is {}".format(feat_RAS.shape[0]))
 
-    logger.info("Skip recentering because input tractography is already registered.")
-
     dataset = RealData_PatchData(
         feat_RAS,
         k=model_config.k,

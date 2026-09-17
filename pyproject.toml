@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tractomamba"
+version = "0.1.0"
+description = "Tractomamba tractography parcellation inference package"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+dependencies = [
+    "torch",
+    "numpy",
+    "pandas",
+    "openpyxl",
+    "vtk",
+    "whitematteranalysis",
+    "pytorch3d",
+    "mamba-ssm",
+]
+
+[project.scripts]
+tractomamba = "run_inference:main"
+
+[tool.setuptools]
+py-modules = ["run_inference"]
+packages = ["configs", "datasets", "models", "trainedmodel", "utils"]
+
+[tool.setuptools.package-data]
+configs = ["*.json"]
+datasets = ["*.xlsx"]
+trainedmodel = ["*.pth", "*.md"]
