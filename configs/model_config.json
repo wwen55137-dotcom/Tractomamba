@@ -1,0 +1,11 @@
+{
+  "model_name": "Tractomamba",
+  "k": 30,
+  "k_global": 800,
+  "dropout": 0.3,
+  "mamba_layers": 2,
+  "mamba_dropout": 0.2,
+  "num_fiber_per_brain": 10000,
+  "num_point_per_fiber": 15,
+  "cal_equiv_dist": false
+}
