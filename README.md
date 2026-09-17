@@ -1,39 +1,57 @@
 # Tractomamba
 
-Tractomamba is an inference package for tractography parcellation using the Tractomamba model architecture. It takes a registered whole-brain tractography file in VTK/VTP format and writes predicted tract bundles as separate `.vtp` files.
+Tractomamba is a tractography parcellation inference package based on the
+Tractomamba model architecture. It takes a registered whole-brain tractography
+file in `.vtp` or `.vtk` format and writes the predicted tract bundles as
+separate `.vtp` files.
 
-This repository publishes the model architecture, inference code, runtime configuration, and label metadata. Trained model checkpoints are not included. Pass a private or separately distributed checkpoint at inference time with `--weight_path`.
+This GitHub release includes the inference code, model configuration, label
+metadata, and a trained checkpoint for direct inference.
 
-## Contents
+## Repository Structure
 
-- `run_inference.py`: command-line inference entry point for registered tractography data
-- `models/Tractomamba.py`: Tractomamba model definition
-- `configs/model_config.json`: architecture settings used to rebuild the model
-- `weights/README.md`: note about checkpoint placement
-- `datasets/tract_cluster_labels.xlsx`: cluster-to-tract label metadata
-- `utils/`: runtime utilities for feature extraction, label mapping, logging, and output writing
+```text
+Tractomamba/
+├── configs/
+│   └── model_config.json
+├── datasets/
+│   ├── dataset.py
+│   └── tract_cluster_labels.xlsx
+├── models/
+│   └── Tractomamba.py
+├── trainedmodel/
+│   └── best_tract_f1_model.pth
+├── utils/
+├── run_inference.py
+├── requirements.txt
+├── REPRODUCIBILITY.md
+└── README.md
+```
 
-## Public Release Scope
+## Included Model
 
-This repository is intended to release code only:
+The trained checkpoint is included at:
 
-- Included: inference code, model definition, configuration, label metadata, requirements, and documentation
-- Not included: trained checkpoints, local experiment outputs, logs, cache files, or private model artifacts
-- Training and validation data: available from the TractCloud GitHub release/dataset repository
+```text
+trainedmodel/best_tract_f1_model.pth
+```
 
-With the same checkpoint, configuration, environment, and registered input tractography, this package can reproduce the inference workflow. To reproduce training from scratch, use the public TractCloud training/validation data together with the original training protocol and hyperparameters.
+`run_inference.py` uses this checkpoint by default. You only need to pass
+`--weight_path` if you want to use another checkpoint.
 
 ## Requirements
 
-The package has been tested in a CUDA environment. CPU inference is not supported because the installed `mamba_ssm` kernels require CUDA.
+This package is intended for a CUDA-enabled Python environment. CPU inference
+is not supported because the `mamba-ssm` kernels used by this model require
+CUDA.
 
-Install the Python dependencies from this folder:
+Install dependencies from this folder:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-The main dependencies are:
+Main dependencies:
 
 - PyTorch
 - NumPy
@@ -43,63 +61,86 @@ The main dependencies are:
 - pytorch3d
 - mamba-ssm
 
-Depending on your CUDA and PyTorch versions, `pytorch3d` and `mamba-ssm` may need version-specific installation commands.
+Depending on your CUDA and PyTorch versions, `pytorch3d` and `mamba-ssm` may
+need version-specific installation commands.
 
-For stricter reproducibility, record the exact Python, CUDA, PyTorch, `mamba-ssm`, and `pytorch3d` versions used in your environment.
-
-## Input
+## Input Data
 
 The inference script expects a whole-brain tractography file:
 
 - Format: `.vtp` or `.vtk`
-- Streamline coordinates: RAS coordinate convention
-- Input data should already be registered/aligned to the model's expected space
-- The script resamples streamline features internally according to the saved model configuration
+- Coordinate convention: RAS
+- The tractography should already be registered/aligned to the model's expected
+  space
+- The script resamples streamline features internally according to
+  `configs/model_config.json`
 - The script does not recenter the input tractography
 
 ## Run Inference
 
-From this folder:
+From the `Tractomamba` folder:
 
 ```bash
 python run_inference.py \
   --tractography_path /path/to/input.vtp \
-  --weight_path /path/to/best_tract_f1_model.pth \
-  --out_path ./outputs/example \
-  --device cuda:0
-```
-
-You can also let the script select CUDA automatically:
-
-```bash
-python run_inference.py \
-  --tractography_path /path/to/input.vtp \
-  --weight_path /path/to/best_tract_f1_model.pth \
   --out_path ./outputs/example \
   --device auto
 ```
 
+To select a specific GPU:
+
+```bash
+python run_inference.py \
+  --tractography_path /path/to/input.vtp \
+  --out_path ./outputs/example \
+  --device cuda:0
+```
+
+To use a different checkpoint:
+
+```bash
+python run_inference.py \
+  --tractography_path /path/to/input.vtp \
+  --weight_path /path/to/another_checkpoint.pth \
+  --out_path ./outputs/example \
+  --device cuda:0
+```
+
 ## Output
 
-The predicted tract `.vtp` files are written under:
+Predicted tract files are written to:
 
 ```text
 outputs/example/predictions/
 ```
 
-The script also writes logs under:
+Runtime logs are written to:
 
 ```text
 outputs/example/log/
 ```
 
+Generated outputs and logs are ignored by Git and should not be committed.
+
+## Reproducibility
+
+Inference can be reproduced with:
+
+- The included checkpoint: `trainedmodel/best_tract_f1_model.pth`
+- The included architecture config: `configs/model_config.json`
+- The same registered input tractography file
+- A compatible CUDA/PyTorch/`mamba-ssm`/`pytorch3d` environment
+
+See `REPRODUCIBILITY.md` for more details.
+
 ## Notes
 
 - This package is for research use.
-- `configs/model_config.json` stores only the architecture settings needed to rebuild the model for inference.
-- Trained checkpoints (`*.pth`, `*.pt`, `*.ckpt`, `*.safetensors`, and similar files) are intentionally excluded from this public repository.
-- Training/validation datasets are provided through the TractCloud GitHub resources, not duplicated in this repository.
-- Generated files such as `outputs/`, `__pycache__/`, and `*.pyc` should not be committed.
+- This repository provides inference code and a trained inference checkpoint.
+- Training and validation datasets are not included in this repository.
+- Training from scratch requires the original training data, train/validation
+  split files, training script, hyperparameters, preprocessing settings, and
+  compatible CUDA/PyTorch/library versions.
 
 ## License
 
@@ -107,7 +148,8 @@ This package follows the license in `LICENSE`.
 
 ## Citation
 
-If you use atlas-derived training data or label resources, please cite the white matter atlas work:
+If you use atlas-derived training data or label resources, please cite the
+white matter atlas work:
 
 ```text
 Zhang, F., Wu, Y., Norton, I., Rathi, Y., Makris, N.,

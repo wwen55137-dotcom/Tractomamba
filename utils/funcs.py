@@ -150,6 +150,11 @@ def clusters_to_tract_labels(lst, ordered_tract_cluster_mapping_dict, output_lst
     return new_lst       
 
 
+# Backward-compatible names used by the original training dataset code.
+obtain_TractClusterMapping = load_tract_cluster_mapping
+cluster2tract_label = clusters_to_tract_labels
+
+
 def get_rot_axi(axis_name):
     if axis_name == 'LR':
         rot_axi = 'X'

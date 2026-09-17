@@ -11,6 +11,7 @@ import whitematteranalysis as wma
 
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_WEIGHT_PATH = os.path.join(ROOT, "trainedmodel", "best_tract_f1_model.pth")
 os.chdir(ROOT)
 sys.path.insert(0, ROOT)
 
@@ -49,7 +50,10 @@ def build_model(args, device):
         dropout=args.dropout,
     )
     if not os.path.isfile(args.weight_path):
-        raise FileNotFoundError(f"Model weight file not found: {args.weight_path}. Weights are intentionally not included in this public code package; pass your local checkpoint with --weight_path.")
+        raise FileNotFoundError(
+            f"Model weight file not found: {args.weight_path}. "
+            "Use --weight_path to point to a Tractomamba checkpoint."
+        )
     weight = torch.load(args.weight_path, map_location=device)
     model.load_state_dict(weight)
     model.to(device)
@@ -83,7 +87,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run Tractomamba inference on a VTP/VTK tractography file.")
     parser.add_argument("--tractography_path", required=True, help="Input tractography .vtp/.vtk file.")
     parser.add_argument("--out_path", default=os.path.join(ROOT, "outputs"), help="Output directory.")
-    parser.add_argument("--weight_path", required=True, help="Path to a local Tractomamba checkpoint (.pth). The public package does not include model weights.")
+    parser.add_argument("--weight_path", default=DEFAULT_WEIGHT_PATH, help="Path to a Tractomamba checkpoint (.pth).")
     parser.add_argument("--config_path", default=os.path.join(ROOT, "configs", "model_config.json"), help="JSON file containing the model architecture settings.")
     parser.add_argument("--batch_size", type=int, default=1024, help="Inference batch size.")
     parser.add_argument("--k_ds_rate", type=float, default=0.1, help="Downsample rate for local-neighbor calculation.")

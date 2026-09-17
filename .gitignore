@@ -3,15 +3,16 @@ __pycache__/
 outputs/
 .DS_Store
 
-# Private model checkpoints and generated binary artifacts.
-weights/*
-!weights/README.md
+# Generated binary artifacts.
+weights/
 *.pt
 *.pth
 *.ckpt
 *.bin
 *.safetensors
 *.onnx
+!trainedmodel/
+!trainedmodel/best_tract_f1_model.pth
 
 # Local experiment/data artifacts.
 *.log

@@ -1,27 +1,31 @@
 # Reproducibility
 
-This repository is a public code release without trained model checkpoints.
+This repository includes the Tractomamba inference code and a trained
+checkpoint for direct inference.
 
 ## Inference Reproducibility
 
-Inference can be reproduced when the following are available:
+Inference can be reproduced when the following are fixed:
 
-- The same Tractomamba checkpoint passed with `--weight_path`
-- The same `configs/model_config.json`
-- The same registered input tractography file
-- A compatible CUDA environment with PyTorch, `mamba-ssm`, and `pytorch3d`
+- Checkpoint: `trainedmodel/best_tract_f1_model.pth`
+- Model configuration: `configs/model_config.json`
+- Registered input tractography file
+- Python, CUDA, PyTorch, `mamba-ssm`, and `pytorch3d` versions
+- Inference arguments such as `--batch_size`, `--k_ds_rate`, and `--device`
 
-The public repository does not include pretrained weights.
+The script does not recenter tractography. Input files should already be
+registered/aligned to the model's expected space.
 
 ## Training Reproducibility
 
-Training from scratch requires resources outside this inference package:
+This repository is packaged for inference. Training from scratch requires
+resources outside this release:
 
-- TractCloud training and validation datasets from the TractCloud GitHub resources
-- The same train/validation split files
+- TractCloud training and validation datasets
+- The original train/validation split files
 - The original training script and hyperparameters
 - The same preprocessing and augmentation settings
 - Fixed random seeds and compatible CUDA/PyTorch/library versions
 
-Because CUDA kernels and data loading can introduce nondeterminism, retraining may produce slightly different metrics even with the same configuration.
-
+Because CUDA kernels and data loading can introduce nondeterminism, retraining
+may produce slightly different metrics even with the same configuration.
