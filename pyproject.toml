@@ -22,9 +22,10 @@ dependencies = [
 
 [project.scripts]
 tractomamba = "run_inference:main"
+tractomamba-train = "train:main"
 
 [tool.setuptools]
-py-modules = ["run_inference"]
+py-modules = ["run_inference", "train"]
 packages = ["configs", "datasets", "models", "trainedmodel", "utils"]
 
 [tool.setuptools.package-data]
