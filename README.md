@@ -24,6 +24,7 @@ Tractomamba/
 │   └── tractomamba_pretrained.pth
 ├── utils/
 ├── run_inference.py
+├── train.py
 ├── pyproject.toml
 ├── requirements.txt
 └── README.md
@@ -126,14 +127,40 @@ outputs/example/log/
 
 Generated outputs and logs are ignored by Git and should not be committed.
 
+## Training
+
+This repository also includes a training entry point adapted from the original
+training code. Training data are not included in this release. To train from
+scratch, prepare an input directory containing:
+
+```text
+train.pickle
+val.pickle
+```
+
+Each pickle file should contain `feat`, `label`, `label_name`, and `subject_id`
+fields compatible with `datasets/dataset.py`.
+
+After installing the package, run:
+
+```bash
+tractomamba-train \
+  --input_path /path/to/training_data \
+  --out_path_base ./outputs/train_run \
+  --device auto
+```
+
+The best model weights are saved to:
+
+```text
+outputs/train_run/best_tractomamba_model.pth
+```
+
 ## Notes
 
 - This package is for research use.
 - This repository provides inference code and a trained inference checkpoint.
 - Training and validation datasets are not included in this repository.
-- Training from scratch requires the original training data, train/validation
-  split files, training script, hyperparameters, preprocessing settings, and
-  compatible CUDA/PyTorch/library versions.
 
 ## License
 
