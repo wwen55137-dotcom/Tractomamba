@@ -11,8 +11,10 @@ weights/
 *.bin
 *.safetensors
 *.onnx
-!trainedmodel/
-!trainedmodel/tractomamba_pretrained.pth
 
 # Local experiment/data artifacts.
 *.log
+
+# Withheld until paper acceptance; retain local copies only.
+/models/*.py
+/models/**/

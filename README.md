@@ -2,166 +2,35 @@
 
 Tractomamba is a sequence-aware algorithm for whole-brain parcellation of
 streamlines from diffusion MRI tractography into anatomically defined white
-matter fiber bundles. It assigns one label to each streamline in a registered
-tractogram and writes the predicted tract bundles as separate `.vtp` files for
-efficient large-scale inference.
+matter fiber bundles.
 
-This GitHub release includes the inference code, model configuration, label
-metadata, and a trained checkpoint for direct inference.
+## Release Status
 
-## Repository Structure
+**The core model implementation, trained model, and pretrained weights will be
+made publicly available after the associated paper is accepted.**
 
-```text
-Tractomamba/
-├── configs/
-│   └── model_config.json
-├── datasets/
-│   ├── dataset.py
-│   └── tract_cluster_labels.xlsx
-├── models/
-│   └── Tractomamba.py
-├── trainedmodel/
-│   └── tractomamba_pretrained.pth
-├── utils/
-├── run_inference.py
-├── train.py
-├── pyproject.toml
-├── requirements.txt
-└── README.md
-```
+Until then, these materials are withheld from the public release. The current
+repository contains supporting code, configuration, and label metadata only.
+Training and inference require the unreleased model implementation and weights
+and cannot be run using the public repository alone. Installation and usage
+instructions will be provided with the full release after paper acceptance.
 
-## Included Model
+## Public Repository Contents
 
-The trained checkpoint is included at:
+- `configs/`: model configuration.
+- `datasets/`: data-loading utilities and tract label metadata.
+- `models/README.md`: core model release notice.
+- `trainedmodel/README.md`: trained model and weights release notice.
+- `utils/`: supporting utilities.
+- `run_inference.py`: inference entry point; requires the forthcoming model release.
+- `train.py`: training entry point; requires the forthcoming model release.
+- `pyproject.toml` and `requirements.txt`: package metadata and dependencies.
 
-```text
-trainedmodel/tractomamba_pretrained.pth
-```
+## Data Availability
 
-`run_inference.py` uses this checkpoint by default. You only need to pass
-`--weight_path` if you want to use another checkpoint.
-
-## Quick Start
-
-Clone the repository and install the package:
-
-```bash
-git clone https://github.com/wwen55137-dotcom/Tractomamba.git
-cd Tractomamba
-pip install -e .
-```
-
-Prepare a registered whole-brain tractography file in `.vtp` or `.vtk` format
-using the LPS coordinate convention. Then run inference with the included
-checkpoint:
-
-```bash
-tractomamba \
-  --tractography_path /path/to/input.vtp \
-  --out_path ./outputs/example \
-  --device auto
-```
-
-The predicted tract bundles will be saved in:
-
-```text
-outputs/example/predictions/
-```
-
-## Requirements
-
-This package is intended for a CUDA-enabled Python environment. CPU inference
-is not supported because the `mamba-ssm` kernels used by this model require
-CUDA.
-
-Install Tractomamba from this folder:
-
-```bash
-pip install -e .
-```
-
-This installs the `tractomamba` command-line tool and the main dependencies:
-
-```bash
-pip install torch numpy pandas openpyxl vtk whitematteranalysis pytorch3d mamba-ssm
-```
-
-Depending on your CUDA and PyTorch versions, `pytorch3d` and `mamba-ssm` may
-need version-specific installation commands.
-
-## Input Data
-
-The inference script expects a whole-brain tractography file:
-
-- Format: `.vtp` or `.vtk`
-- Coordinate convention: LPS
-- The tractography should already be registered/aligned to the model's expected
-  space
-- The script resamples streamline features internally according to
-  `configs/model_config.json`
-
-## Atlas Data
-
-The ORG atlas used in training is available at:
-
-```text
-http://dmri.slicer.org/atlases/
-```
-
-## Output
-
-Predicted tract files are written to:
-
-```text
-outputs/example/predictions/
-```
-
-The output tract files preserve the input tractogram coordinates and are written
-in LPS space.
-
-Runtime logs are written to:
-
-```text
-outputs/example/log/
-```
-
-Generated outputs and logs are ignored by Git and should not be committed.
-
-## Training
-
-This repository also includes a training entry point adapted from the original
-training code. Training data are not included in this release. To train from
-scratch, prepare an input directory containing:
-
-```text
-train.pickle
-val.pickle
-```
-
-Each pickle file should contain `feat`, `label`, `label_name`, and `subject_id`
-fields compatible with `datasets/dataset.py`.
-
-After installing the package, run:
-
-```bash
-tractomamba-train \
-  --input_path /path/to/training_data \
-  --out_path_base ./outputs/train_run \
-  --device auto
-```
-
-The best model weights are saved to:
-
-```text
-outputs/train_run/best_tractomamba_model.pth
-```
-
-## Notes
-
-- This package is for research use.
-- This repository provides inference code and a trained inference checkpoint.
-- Training and validation datasets are not included in this repository.
+Training and validation datasets are not included in this repository.
+The ORG atlas used in training is available at <http://dmri.slicer.org/atlases/>.
 
 ## License
 
-This package follows the license in `LICENSE`.
+The currently published files are subject to `LICENSE`.

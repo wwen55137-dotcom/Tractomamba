@@ -1,11 +1,7 @@
-# Trained Model
+# Trained Model and Pretrained Weights
 
-This directory contains the trained Tractomamba checkpoint used by default for
-inference:
+The trained Tractomamba model and pretrained weights are withheld from the
+public release until the associated paper is accepted. They will be made
+publicly available after paper acceptance, together with usage instructions.
 
-```text
-tractomamba_pretrained.pth
-```
-
-`run_inference.py` loads this checkpoint automatically unless another path is
-provided with `--weight_path`.
+The current public repository does not include a checkpoint for inference.
